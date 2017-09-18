@@ -27,8 +27,21 @@ if (fileSystem.existsSync(secretsPath)) {
   alias['secrets'] = secretsPath
 }
 
+const HtmlFiles = [
+  'popup',
+  'options',
+  'background'
+].map(
+  (name) => new HtmlWebpackPlugin({
+    template: path.join(__dirname, 'src', `${name}.html`),
+    filename: `${name}.html`,
+    chunks: [ name ]
+  })
+)
+
 const options = {
   entry: {
+    contentscript: path.join(__dirname, 'src', 'js', 'contentscript.js'),
     popup: path.join(__dirname, 'src', 'js', 'popup.js'),
     options: path.join(__dirname, 'src', 'js', 'options.js'),
     background: path.join(__dirname, 'src', 'js', 'background.js')
@@ -72,21 +85,7 @@ const options = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(env.NODE_ENV)
     }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'popup.html'),
-      filename: 'popup.html',
-      chunks: ['popup']
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'options.html'),
-      filename: 'options.html',
-      chunks: ['options']
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'background.html'),
-      filename: 'background.html',
-      chunks: ['background']
-    }),
+    ...HtmlFiles,
     new WriteFilePlugin()
   ]
 }

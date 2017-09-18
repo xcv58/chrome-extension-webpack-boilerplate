@@ -1,16 +1,47 @@
 {
   "name": "Chrome Extension Webpack",
-  "options_page": "options.html",
+  "description": "A boilerplate to chrome extension with webpack",
   "background": {
     "page": "background.html"
   },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "contentscript.bundle.js"
+      ],
+      "all_frames": true
+    }
+  ],
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
   "browser_action": {
     "default_popup": "popup.html",
-    "default_icon": "icon-34.png"
+    "default_title": "Chrome Extension Webpack",
+    "default_icon": "icon-16.png"
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "windows": "Ctrl+T",
+        "mac": "MacCtrl+T",
+        "chromeos": "Ctrl+T",
+        "linux": "Ctrl+T"
+      }
+    }
   },
   "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
     "128": "icon-128.png"
   },
   "manifest_version": 2,
+  "minimum_chrome_version": "60.0.3112",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
